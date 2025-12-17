@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XPG Atlas</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+  <style>
+    body {
+      background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)),
+                  url("{% static 'xpg_app/thumbnail_image.png' %}") center center / cover no-repeat fixed;
+      color: white;
+      font-family: 'Helvetica Neue', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 7rem 2rem 5rem 2rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 850px;
+      margin: auto;
+      font-size: 1.15rem;
+      color: #e4e7ff;
+      line-height: 1.6;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+
+    .btn-primary-custom {
+      background-color: #c56dff;
+      border: none;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .btn-primary-custom:hover {
+      background-color: #a85ae0;
+    }
+
+    .btn-outline-custom {
+      border: 1.5px solid #e4e7ff;
+      color: #e4e7ff;
+      transition: 0.3s;
+    }
+
+    .btn-outline-custom:hover {
+      background-color: #e4e7ff;
+      color: #121212;
+    }
+
+    .content {
+      max-width: 950px;
+      margin: auto;
+      padding: 2rem;
+      text-align: center;
+      color: #f1f3ff;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+
+    footer {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 1rem 0;
+      text-align: center;
+      color: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">XPG Atlas</a>
+      <div class="navbar-nav">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="https://doi.org/10.21203/rs.3.rs-5624085/v1" target="_blank">Original Paper</a>
+        <a class="nav-link" href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt" target="_blank">STRING Analysis</a>
+        {% comment %}
+        <a class="nav-link" href="/disease-overview/">Disease Association Overview</a>
+        {% endcomment %}
+      </div>
+      <form class="d-flex ms-auto" method="get" action="/search/">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search Gene...">
+        <button class="btn btn-outline-light">🔍</button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Experience-Dependent Parvalbumin Inhibitory Neuron Plasticity Gene (XPG) Atlas</h1>
+    <p>
+      Users can search the atlas for whether your favorite genes of interest (YFGs) were identified as
+      putative regulators of experience-dependent parvalbumin inhibitory neuron plasticity or “XPGs”
+      in a first of its kind <em>in vivo</em> physiological activity-sensitive adult hippocampal PV translatome
+      screen performed in the Sahay lab. The atlas integrates cell-specific gene expression, protein-protein interaction data,
+      and disease annotation (neurodevelopmental disorders, ASD, epilepsy, bipolar disorder, and schizophrenia).
+    </p>
+    <div class="mt-4">
+      <a href="/search/" class="btn btn-primary-custom btn-lg me-3">Start Exploring</a>
+      <a href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt"
+         class="btn btn-outline-custom btn-lg" target="_blank">
+         STRING Analysis of XPGs
+      </a>
+    </div>
+  </div>
+
+  <div class="content">
+    <h4 class="fw-bold mb-3">About the Study</h4>
+    <p>
+      Details on the XPG screen can be found in the preprint by Shih and Alipio et al. (2025, under revision),
+      <em>“Pro-cognitive restoration of experience-dependent parvalbumin inhibitory neuron plasticity in neurodevelopmental disorders.”</em>
+    </p>
+
+    <!-- === TWO-COLUMN DATA SOURCES & CITATIONS === -->
+    <div class="mt-4" style="font-size: 0.95rem; color: #d9dcff; text-align: left;">
+      <strong>Data Sources & Citations:</strong>
+
+      <div style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 0.75rem;
+          margin-top: 0.75rem;
+      ">
+
+        <!-- Column 1 -->
+        <div>
+          <ul style="list-style: none; padding-left: 0;">
+            <li>
+              STRING Database v12.0 —  
+              <a href="https://string-db.org" target="_blank" style="color:#cbbcff;">
+                string-db.org
+              </a>
+            </li>
+
+            <li>
+              SFARI Gene —  
+              <a href="https://gene.sfari.org" target="_blank" style="color:#cbbcff;">
+                gene.sfari.org
+              </a>
+            </li>
+
+            <li>
+              SCHEMA / Autism Sequencing Consortium —  
+              <a href="https://schema.broadinstitute.org" target="_blank" style="color:#cbbcff;">
+                schema.broadinstitute.org
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 2 -->
+        <div>
+          <ul style="list-style: none; padding-left: 0;">
+            <li>
+              BipEx Bipolar Exome Consortium —  
+              <a href="https://bipex.broadinstitute.org" target="_blank" style="color:#cbbcff;">
+                bipex.broadinstitute.org
+              </a>
+            </li>
+
+            <li>
+              Epi25 Consortium —  
+              <a href="https://epi25.broadinstitute.org" target="_blank" style="color:#cbbcff;">
+                epi25.broadinstitute.org
+              </a>
+            </li>
+
+            <li>
+              Gene Ontology Consortium —  
+              <a href="http://geneontology.org" target="_blank" style="color:#cbbcff;">
+                geneontology.org
+              </a>
+            </li>
+
+            <li>
+              Ensembl / BioMart —  
+              <a href="https://ensembl.org" target="_blank" style="color:#cbbcff;">
+                ensembl.org
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <!-- === END TWO-COLUMN CITATIONS === -->
+
+  </div>
+
+  <footer>
+    <small>© 2025 Sahay Lab | Built with Django | Image: PV interneurons in mouse hippocampus (DG–CA3/CA2)</small>
+  </footer>
+</body>
+</html>

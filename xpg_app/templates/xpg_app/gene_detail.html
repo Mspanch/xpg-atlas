@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ gene.gene }} — XPG Atlas</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #212529;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    .card:hover { transform: scale(1.02); transition: 0.2s ease-in-out; }
+
+    /* =============================== */
+    /* ⭐ CARD LAYOUT FIXES */
+    /* =============================== */
+    .disease-card .card-body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Button pinned to bottom */
+    .disease-card .btn {
+      margin-top: auto;
+    }
+
+    /* ⭐ Better spacing inside BipEx */
+    .bipex-list li {
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    #go-section {
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .sig-group {
+      color: #c0392b;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">XPG Atlas</a>
+      <div class="navbar-nav">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="https://doi.org/10.21203/rs.3.rs-5624085/v1" target="_blank">Original Paper</a>
+        <a class="nav-link" href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt" target="_blank">
+          STRING Analysis
+        </a>
+        {% comment %}
+        <a class="nav-link" href="/disease-overview/">Disease Association Overview</a>
+        {% endcomment %}
+      </div>
+      <form class="d-flex ms-auto" method="get" action="/search/">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search Gene...">
+        <button class="btn btn-outline-light">🔍</button>
+      </form>
+    </div>
+  </nav>
+
+
+  <div class="container py-5">
+
+    <!-- ========================= -->
+    <!-- 🔬 GENE TITLE + SUMMARY -->
+    <!-- ========================= -->
+    <h2 class="mb-3">{{ gene.gene }}</h2>
+
+    <div class="p-3 mb-4 bg-white border rounded shadow-sm">
+      <p class="mb-2">
+        <strong>Description:</strong><br>
+        {{ gene.gene_description|default:"No description available." }}
+      </p>
+
+      <p class="mb-1">
+        <strong>log₂(Fold Change):</strong>
+        {% if gene.log2FC %}
+          {{ gene.log2FC|floatformat:4 }}
+        {% else %}
+          None
+        {% endif %}
+      </p>
+
+      <p class="mb-0">
+        <strong>Adjusted p-value (FDR):</strong>
+        {% if gene.adjP %}
+          {{ gene.adjP|floatformat:4 }}
+        {% else %}
+          None
+        {% endif %}
+      </p>
+    </div>
+
+
+    <hr class="my-4">
+
+    <!-- ========================= -->
+    <!-- 🧠 DISEASE ASSOCIATION CARDS -->
+    <!-- ========================= -->
+    <h4 class="mb-4">Disease Associations</h4>
+
+    <div class="row g-4">
+
+      <!-- SFARI -->
+      <div class="col-md-3">
+        <div class="card disease-card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <h5 class="card-title text-primary">SFARI (Autism)</h5>
+            {% if sfari_info %}
+              <p><b>Score:</b> {{ sfari_info.score }}</p>
+              <p><b>Category:</b> {{ sfari_info.category }}</p>
+              {% if sfari_info.score == 1 %}
+                <span class="badge bg-info">Score 1</span>
+              {% endif %}
+            {% else %}
+              <p class="text-muted">No entry for this gene.</p>
+            {% endif %}
+            <a href="https://gene.sfari.org/database/human-gene/{{ gene.gene }}"
+               target="_blank" class="btn btn-outline-primary btn-sm mt-3">
+               View on SFARI Gene
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHEMA -->
+      <div class="col-md-3">
+        <div class="card disease-card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <h5 class="card-title text-success">SCHEMA (Schizophrenia)</h5>
+            {% if schema_info %}
+              <p><b>OR:</b> {{ schema_info.or_ptv|floatformat:2 }}</p>
+              <p><b>Meta p-value:</b> {{ schema_info.p_meta|floatformat:4 }}</p>
+              <p><b>Meta q-value:</b> {{ schema_info.q_meta|floatformat:4 }}</p>
+
+              {% if schema_info.q_meta < 0.05 %}
+                <span class="badge bg-success">Significant</span>
+              {% endif %}
+            {% else %}
+              <p class="text-muted">No entry for this gene.</p>
+            {% endif %}
+
+            <a href="https://schema.broadinstitute.org/gene/{{ gene.Human_ENSEMBL }}/"
+               target="_blank" class="btn btn-outline-success btn-sm mt-3">
+               View on SCHEMA
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BipEx -->
+      <div class="col-md-3">
+        <div class="card disease-card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <h5 class="card-title text-warning">BipEx (Bipolar Disorder)</h5>
+
+            {% if bipex_info %}
+              <ul class="list-unstyled bipex-list">
+
+                {% if bipex_info.mis_pval %}
+                  <li>
+                    {% if bipex_info.mis_pval < 0.05 %}
+                    <span style="color:#DAA300; font-weight:600;">Missense</span> —
+                      <b>p={{ bipex_info.mis_pval|floatformat:4 }}</b>,
+                      OR={{ bipex_info.mis_odds_ratio }}
+                    {% else %}
+                      Missense — p={{ bipex_info.mis_pval|floatformat:4 }},
+                      OR={{ bipex_info.mis_odds_ratio }}
+                    {% endif %}
+                  </li>
+                {% endif %}
+
+                {% if bipex_info.ptv_pval %}
+                  <li>
+                    {% if bipex_info.ptv_pval < 0.05 %}
+                      <!-- ⭐ Yellow highlight instead of red -->
+                      <span style="color:#DAA300; font-weight:600;">PTV</span> —
+                      <b>p={{ bipex_info.ptv_pval|floatformat:4 }}</b>,
+                      OR={{ bipex_info.ptv_odds_ratio }}
+                    {% else %}
+                      PTV — p={{ bipex_info.ptv_pval|floatformat:4 }},
+                      OR={{ bipex_info.ptv_odds_ratio }}
+                    {% endif %}
+                  </li>
+                {% endif %}
+
+              </ul>
+
+              {% if bipex_info.mis_pval < 0.05 or bipex_info.ptv_pval < 0.05 %}
+                <span class="badge bg-warning text-dark">Significant</span>
+              {% endif %}
+
+            {% else %}
+              <p class="text-muted">No entry for this gene.</p>
+            {% endif %}
+
+            <a href="https://bipex.broadinstitute.org/gene/{{ gene.Human_ENSEMBL }}/"
+               target="_blank" class="btn btn-outline-warning btn-sm mt-3">
+               View BipEx Project
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epi25 -->
+      <div class="col-md-3">
+        <div class="card disease-card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <h5 class="card-title text-danger">Epi25 (Epilepsy)</h5>
+
+            {% if epi25_info %}
+              <ul class="list-unstyled">
+                {% for g in epi25_info.group_stats %}
+                  <li>
+                    {% if g.pval and g.pval < 0.05 %}
+                      <span class="sig-group">{{ g.group }}</span> —
+                      <b>p={{ g.pval|floatformat:4 }}</b>,
+                      OR={{ g.odds_ratio|floatformat:2 }}
+                    {% else %}
+                      {{ g.group }} —
+                      p={{ g.pval|floatformat:4 }},
+                      OR={{ g.odds_ratio|floatformat:2 }}
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+
+              {% if epi25_info.any_significant %}
+                <span class="badge bg-danger">Significant</span>
+              {% endif %}
+            {% else %}
+              <p class="text-muted">No entry for this gene.</p>
+            {% endif %}
+
+            <a href="https://epi25.broadinstitute.org/gene/{{ gene.Human_ENSEMBL }}/"
+               target="_blank" class="btn btn-outline-danger btn-sm mt-3">
+               View on Epi25
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="my-4">
+
+    <!-- GO -->
+    <h4>Gene Ontology (GO) Annotations</h4>
+    <div id="go-section">
+      <go-annotation-ribbon subjects="{{ gene.Mouse_GO_ID }}"></go-annotation-ribbon>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- STRING -->
+    <h4>STRING Protein Interaction Network</h4>
+    <img src="https://string-db.org/api/image/network?identifiers={{ gene.Human_ENSEMBL }}&species=9606"
+         alt="STRING network for {{ gene.gene }}"
+         class="img-fluid rounded border shadow-sm my-3">
+
+    <a href="https://string-db.org/cgi/network?identifiers={{ gene.Human_ENSEMBL }}"
+       target="_blank" class="btn btn-outline-secondary mb-4">
+       Open Interactive STRING Network
+    </a>
+
+    <hr class="my-4">
+
+    <!-- SPLICECODE -->
+    <h4>Cell Type Enrichment (SPLICECODE)</h4>
+    <p>
+      Explore isoform- and transcript-level enrichment for
+      <strong>{{ gene.gene }}</strong> in the
+      <a href="https://scheiffele-splice.scicore.unibas.ch/" target="_blank">
+        SPLICECODE database
+      </a>.
+    </p>
+
+    <hr class="my-5">
+  </div>
+
+  <script type="module" src="https://unpkg.com/@geneontology/web-components@1"></script>
+
+</body>
+</html>
