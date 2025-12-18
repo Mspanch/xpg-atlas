@@ -115,7 +115,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Ensure Django only searches app-level static folders
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [
+    BASE_DIR / "xpg_app" / "static",
+]
+
 
 # Ensure Django actually finds app-level static folders
 STATICFILES_FINDERS = [
