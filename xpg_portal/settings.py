@@ -20,14 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-w*8te^w2zj04ac$fh!5pb*g)g-4p2pcv$5hc+*8c07vhvp-rh^'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# Render sets DEBUG=False using env vars
+# Render sets DEBUG via env
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# Render uses dynamic hostnames, so allow all for now
+# Render needs wildcard hosts
 ALLOWED_HOSTS = ['*']
 
 
@@ -74,7 +72,6 @@ WSGI_APPLICATION = 'xpg_portal.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -85,7 +82,6 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -104,27 +100,30 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
+# ----------------------------------------
+# STATIC FILES CONFIG FOR RENDER
+# ----------------------------------------
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Ensure Django only searches app-level static folders
 STATICFILES_DIRS = []
 
+# Ensure Django actually finds app-level static folders
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
