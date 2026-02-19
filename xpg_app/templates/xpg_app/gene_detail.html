@@ -14,20 +14,12 @@
 
     .card:hover { transform: scale(1.02); transition: 0.2s ease-in-out; }
 
-    /* =============================== */
-    /* ⭐ CARD LAYOUT FIXES */
-    /* =============================== */
     .disease-card .card-body {
       display: flex;
       flex-direction: column;
     }
+    .disease-card .btn { margin-top: auto; }
 
-    /* Button pinned to bottom */
-    .disease-card .btn {
-      margin-top: auto;
-    }
-
-    /* ⭐ Better spacing inside BipEx */
     .bipex-list li {
       margin-bottom: 6px;
       line-height: 1.35;
@@ -51,20 +43,29 @@
 
 <body class="bg-light">
 
-  <!-- NAVBAR -->
+  <!-- ============================ -->
+  <!-- NAVBAR WITH SAHAY LOGO      -->
+  <!-- ============================ -->
   <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
     <div class="container-fluid">
+
+      <!-- ⭐ Sahay Logo (Top Left) -->
+      <img src="https://raw.githubusercontent.com/Mspanch/xpg-atlas/main/xpg_app/static/xpg_app/sahay_logo.png"
+           alt="Sahay Lab Logo"
+           style="height:40px; margin-right:12px;">
+
       <a class="navbar-brand" href="/">XPG Atlas</a>
+
       <div class="navbar-nav">
         <a class="nav-link" href="/">Home</a>
         <a class="nav-link" href="https://doi.org/10.21203/rs.3.rs-5624085/v1" target="_blank">Original Paper</a>
-        <a class="nav-link" href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt" target="_blank">
-          STRING Analysis
-        </a>
+        <a class="nav-link" href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt"
+           target="_blank">STRING Analysis</a>
         {% comment %}
         <a class="nav-link" href="/disease-overview/">Disease Association Overview</a>
         {% endcomment %}
       </div>
+
       <form class="d-flex ms-auto" method="get" action="/search/">
         <input class="form-control me-2" type="search" name="q" placeholder="Search Gene...">
         <button class="btn btn-outline-light">🔍</button>
@@ -73,11 +74,11 @@
   </nav>
 
 
+  <!-- ============================ -->
+  <!-- GENE DETAILS SECTION         -->
+  <!-- ============================ -->
   <div class="container py-5">
 
-    <!-- ========================= -->
-    <!-- 🔬 GENE TITLE + SUMMARY -->
-    <!-- ========================= -->
     <h2 class="mb-3">{{ gene.gene }}</h2>
 
     <div class="p-3 mb-4 bg-white border rounded shadow-sm">
@@ -105,12 +106,12 @@
       </p>
     </div>
 
-
     <hr class="my-4">
 
-    <!-- ========================= -->
-    <!-- 🧠 DISEASE ASSOCIATION CARDS -->
-    <!-- ========================= -->
+    <!-- ============================ -->
+    <!-- DISEASE ASSOCIATION CARDS    -->
+    <!-- ============================ -->
+
     <h4 class="mb-4">Disease Associations</h4>
 
     <div class="row g-4">
@@ -120,17 +121,22 @@
         <div class="card disease-card shadow-sm border-0 h-100">
           <div class="card-body">
             <h5 class="card-title text-primary">SFARI (Autism)</h5>
+
             {% if sfari_info %}
               <p><b>Score:</b> {{ sfari_info.score }}</p>
               <p><b>Category:</b> {{ sfari_info.category }}</p>
+
               {% if sfari_info.score == 1 %}
                 <span class="badge bg-info">Score 1</span>
               {% endif %}
+
             {% else %}
               <p class="text-muted">No entry for this gene.</p>
             {% endif %}
+
             <a href="https://gene.sfari.org/database/human-gene/{{ gene.gene }}"
-               target="_blank" class="btn btn-outline-primary btn-sm mt-3">
+               target="_blank"
+               class="btn btn-outline-primary btn-sm mt-3">
                View on SFARI Gene
             </a>
           </div>
@@ -142,6 +148,7 @@
         <div class="card disease-card shadow-sm border-0 h-100">
           <div class="card-body">
             <h5 class="card-title text-success">SCHEMA (Schizophrenia)</h5>
+
             {% if schema_info %}
               <p><b>OR:</b> {{ schema_info.or_ptv|floatformat:2 }}</p>
               <p><b>Meta p-value:</b> {{ schema_info.p_meta|floatformat:4 }}</p>
@@ -155,7 +162,8 @@
             {% endif %}
 
             <a href="https://schema.broadinstitute.org/gene/{{ gene.Human_ENSEMBL }}/"
-               target="_blank" class="btn btn-outline-success btn-sm mt-3">
+               target="_blank"
+               class="btn btn-outline-success btn-sm mt-3">
                View on SCHEMA
             </a>
           </div>
@@ -174,11 +182,12 @@
                 {% if bipex_info.mis_pval %}
                   <li>
                     {% if bipex_info.mis_pval < 0.05 %}
-                    <span style="color:#DAA300; font-weight:600;">Missense</span> —
+                      <span style="color:#DAA300; font-weight:600;">Missense</span> —
                       <b>p={{ bipex_info.mis_pval|floatformat:4 }}</b>,
                       OR={{ bipex_info.mis_odds_ratio }}
                     {% else %}
-                      Missense — p={{ bipex_info.mis_pval|floatformat:4 }},
+                      Missense —
+                      p={{ bipex_info.mis_pval|floatformat:4 }},
                       OR={{ bipex_info.mis_odds_ratio }}
                     {% endif %}
                   </li>
@@ -187,12 +196,12 @@
                 {% if bipex_info.ptv_pval %}
                   <li>
                     {% if bipex_info.ptv_pval < 0.05 %}
-                      <!-- ⭐ Yellow highlight instead of red -->
                       <span style="color:#DAA300; font-weight:600;">PTV</span> —
                       <b>p={{ bipex_info.ptv_pval|floatformat:4 }}</b>,
                       OR={{ bipex_info.ptv_odds_ratio }}
                     {% else %}
-                      PTV — p={{ bipex_info.ptv_pval|floatformat:4 }},
+                      PTV —
+                      p={{ bipex_info.ptv_pval|floatformat:4 }},
                       OR={{ bipex_info.ptv_odds_ratio }}
                     {% endif %}
                   </li>
@@ -209,7 +218,8 @@
             {% endif %}
 
             <a href="https://bipex.broadinstitute.org/gene/{{ gene.Human_ENSEMBL }}/"
-               target="_blank" class="btn btn-outline-warning btn-sm mt-3">
+               target="_blank"
+               class="btn btn-outline-warning btn-sm mt-3">
                View BipEx Project
             </a>
           </div>
@@ -247,7 +257,8 @@
             {% endif %}
 
             <a href="https://epi25.broadinstitute.org/gene/{{ gene.Human_ENSEMBL }}/"
-               target="_blank" class="btn btn-outline-danger btn-sm mt-3">
+               target="_blank"
+               class="btn btn-outline-danger btn-sm mt-3">
                View on Epi25
             </a>
           </div>
@@ -268,26 +279,16 @@
 
     <!-- STRING -->
     <h4>STRING Protein Interaction Network</h4>
+
     <img src="https://string-db.org/api/image/network?identifiers={{ gene.Human_ENSEMBL }}&species=9606"
          alt="STRING network for {{ gene.gene }}"
          class="img-fluid rounded border shadow-sm my-3">
 
     <a href="https://string-db.org/cgi/network?identifiers={{ gene.Human_ENSEMBL }}"
-       target="_blank" class="btn btn-outline-secondary mb-4">
+       target="_blank"
+       class="btn btn-outline-secondary mb-4">
        Open Interactive STRING Network
     </a>
-
-    <hr class="my-4">
-
-    <!-- SPLICECODE -->
-    <h4>Cell Type Enrichment (SPLICECODE)</h4>
-    <p>
-      Explore isoform- and transcript-level enrichment for
-      <strong>{{ gene.gene }}</strong> in the
-      <a href="https://scheiffele-splice.scicore.unibas.ch/" target="_blank">
-        SPLICECODE database
-      </a>.
-    </p>
 
     <hr class="my-5">
   </div>

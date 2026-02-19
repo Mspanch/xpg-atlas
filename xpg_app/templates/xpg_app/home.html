@@ -13,7 +13,8 @@
   <style>
     body {
       background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)),
-                  url("https://raw.githubusercontent.com/Mspanch/xpg-atlas/main/xpg_app/static/xpg_app/thumbnail_image.png") center center / cover no-repeat fixed;
+                  url("https://raw.githubusercontent.com/Mspanch/xpg-atlas/main/xpg_app/static/xpg_app/thumbnail_image.png")
+                  center center / cover no-repeat fixed;
       color: white;
       font-family: 'Helvetica Neue', sans-serif;
       margin: 0;
@@ -34,6 +35,7 @@
     .hero h1 {
       font-size: 3rem;
       font-weight: 700;
+      margin-top: 1rem;
       margin-bottom: 1rem;
     }
 
@@ -91,7 +93,14 @@
 <body>
   <nav class="navbar navbar-dark navbar-expand-lg">
     <div class="container-fluid">
+
+      <!-- Sahay Lab Logo (Navbar ONLY) -->
+      <img src="https://raw.githubusercontent.com/Mspanch/xpg-atlas/main/xpg_app/static/xpg_app/sahay_logo.png"
+           alt="Sahay Lab Logo"
+           style="height:40px; margin-right:12px;">
+
       <a class="navbar-brand" href="/">XPG Atlas</a>
+
       <div class="navbar-nav">
         <a class="nav-link" href="/">Home</a>
         <a class="nav-link" href="https://doi.org/10.21203/rs.3.rs-5624085/v1" target="_blank">Original Paper</a>
@@ -100,6 +109,7 @@
         <a class="nav-link" href="/disease-overview/">Disease Association Overview</a>
         {% endcomment %}
       </div>
+
       <form class="d-flex ms-auto" method="get" action="/search/">
         <input class="form-control me-2" type="search" name="q" placeholder="Search Gene...">
         <button class="btn btn-outline-light">🔍</button>
@@ -107,15 +117,21 @@
     </div>
   </nav>
 
+
+  <!-- HERO (NO LOGO INSIDE) -->
   <div class="hero">
+
     <h1>Experience-Dependent Parvalbumin Inhibitory Neuron Plasticity Gene (XPG) Atlas</h1>
+
     <p>
-      Users can search the atlas for whether your favorite genes of interest (YFGs) were identified as
-      putative regulators of experience-dependent parvalbumin inhibitory neuron plasticity or “XPGs”
-      in a first of its kind <em>in vivo</em> physiological activity-sensitive adult hippocampal PV translatome
-      screen performed in the Sahay lab. The atlas integrates cell-specific gene expression, protein-protein interaction data,
+      Users can search the atlas for whether your favorite genes of interest (YFGs) were 
+      identified as putative regulators of experience-dependent parvalbumin inhibitory neuron 
+      plasticity or “XPGs” in a first of its kind <em>in vivo</em>, input specific, activity-sensitive 
+      adult hippocampal PV translatome screen performed in the Sahay Lab.  
+      The atlas integrates cell-specific gene expression, protein–protein interaction data, 
       and disease annotation (neurodevelopmental disorders, ASD, epilepsy, bipolar disorder, and schizophrenia).
     </p>
+
     <div class="mt-4">
       <a href="/search/" class="btn btn-primary-custom btn-lg me-3">Start Exploring</a>
       <a href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt"
@@ -125,10 +141,12 @@
     </div>
   </div>
 
+
+  <!-- CONTENT -->
   <div class="content">
     <h4 class="fw-bold mb-3">About the Study</h4>
     <p>
-      Details on the XPG screen can be found in the preprint by Shih and Alipio et al. (2025, under revision),
+      Details on the XPG screen can be found in the preprint by Shih and Alipio et al. (2025, under revision),  
       <em>“Pro-cognitive restoration of experience-dependent parvalbumin inhibitory neuron plasticity in neurodevelopmental disorders.”</em>
     </p>
 
@@ -146,22 +164,17 @@
         <!-- Column 1 -->
         <div>
           <ul style="list-style: none; padding-left: 0;">
-            <li>
-              STRING Database v12.0 —  
+            <li>STRING Database v12.0 — 
               <a href="https://string-db.org" target="_blank" style="color:#cbbcff;">
                 string-db.org
               </a>
             </li>
-
-            <li>
-              SFARI Gene —  
+            <li>SFARI Gene — 
               <a href="https://gene.sfari.org" target="_blank" style="color:#cbbcff;">
                 gene.sfari.org
               </a>
             </li>
-
-            <li>
-              SCHEMA / Autism Sequencing Consortium —  
+            <li>SCHEMA / ASC —
               <a href="https://schema.broadinstitute.org" target="_blank" style="color:#cbbcff;">
                 schema.broadinstitute.org
               </a>
@@ -172,29 +185,22 @@
         <!-- Column 2 -->
         <div>
           <ul style="list-style: none; padding-left: 0;">
-            <li>
-              BipEx Bipolar Exome Consortium —  
+            <li>BipEx Consortium —
               <a href="https://bipex.broadinstitute.org" target="_blank" style="color:#cbbcff;">
                 bipex.broadinstitute.org
               </a>
             </li>
-
-            <li>
-              Epi25 Consortium —  
+            <li>Epi25 Consortium —
               <a href="https://epi25.broadinstitute.org" target="_blank" style="color:#cbbcff;">
                 epi25.broadinstitute.org
               </a>
             </li>
-
-            <li>
-              Gene Ontology Consortium —  
+            <li>Gene Ontology Consortium —
               <a href="http://geneontology.org" target="_blank" style="color:#cbbcff;">
                 geneontology.org
               </a>
             </li>
-
-            <li>
-              Ensembl / BioMart —  
+            <li>Ensembl / BioMart —
               <a href="https://ensembl.org" target="_blank" style="color:#cbbcff;">
                 ensembl.org
               </a>
@@ -209,7 +215,8 @@
   </div>
 
   <footer>
-    <small>© 2025 Sahay Lab | Built with Django | Image: PV interneurons in mouse hippocampus (DG–CA3/CA2)</small>
+    <small>© 2025 Sahay Lab | Built with Django | Image: copyright Sahay Lab</small>
   </footer>
+
 </body>
 </html>

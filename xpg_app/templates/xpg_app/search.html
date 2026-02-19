@@ -62,11 +62,20 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
     <div class="container-fluid">
+
+      <!-- ⭐ Sahay Lab Logo -->
+      <img src="https://raw.githubusercontent.com/Mspanch/xpg-atlas/main/xpg_app/static/xpg_app/sahay_logo.png"
+           alt="Sahay Lab Logo"
+           style="height:40px; margin-right:12px;">
+
       <a class="navbar-brand" href="/">XPG Atlas</a>
+
       <div class="navbar-nav">
         <a class="nav-link" href="/">Home</a>
         <a class="nav-link" href="https://doi.org/10.21203/rs.3.rs-5624085/v1" target="_blank">Original Paper</a>
-        <a class="nav-link" href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt" target="_blank">STRING Analysis</a>
+        <a class="nav-link"
+           href="https://version-12-0.string-db.org/cgi/globalenrichment?networkId=bLTOlM6CRnwt"
+           target="_blank">STRING Analysis</a>
         {% comment %}
         <a class="nav-link" href="/disease-overview/">Disease Association Overview</a>
         {% endcomment %}
@@ -81,6 +90,7 @@
   </nav>
 
   <div class="container py-5">
+
     <!-- Search bar -->
     <form method="get" class="mb-4">
       <input id="query" type="text" name="q" class="form-control"
